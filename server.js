@@ -2,7 +2,8 @@ const express = require("express")
 const morgan = require("morgan")
 const cors = require("cors")
 const bodyParser = require("body-parser")
-const tipRouter = require("./tip")
+
+const tipCalculatorRoute = require("./Middleware-HW/Routes/tip")
 // const todoRouter = require("./routes/todoRouter")
 
 // Config Goes Here
@@ -17,7 +18,7 @@ server.use(express.json())
 server.use(bodyParser.json())
 server.use(morgan("dev"))
 // it uses everything in the tip file /tip
-server.use("/tip", tipRouter)
+server.use("/tip", tipCalculatorRoute)
 
 // Routes go Here
 // /:name - I can put my name instead of name. 
@@ -25,16 +26,7 @@ server.use("/tip", tipRouter)
 server.get("/:name", (req, res)=>{
     res.status(200).json({message: "Hello." + req.params.name})
 })
-server.get("/tip", (req, res)=>{
-    res.status(200).json
+server.get("/tip/:total/:tipPercentage", (req, res)=>{
+    res.status(200).json({message:`Your tip is ${req.params.total*req.params.tipPercentage/100}`})
 })
 
-
-
-
-
-
-
-server.listen(PORT, ()=>{
-    console.log(`Server is listening at: ${PORT}`)
-})
